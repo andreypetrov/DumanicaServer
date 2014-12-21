@@ -27,9 +27,21 @@ var  shuffleTrimAndCensorSynonyms = function(rows, maxSynonymsCount) {
         shuffle(synonyms);
         synonyms = synonyms.slice(0, maxSynonymsCount); //trim down to max count
         censorSynonyms(rows[i].word, synonyms);
-        rows[i].synonyms = synonyms.join(', ');
+         rows[i].synonyms = synonyms.join(', ');
+        prependCategory(rows[i]);
     }
 }
+
+/**
+ * prepend in the synonyms string the first category (if there are several) in braces
+ * @param category
+ * @param synonyms
+ */
+var prependCategory = function (row) {
+    var categories = row.category.split(', ');
+    var firstCategoryInBraces = "(" + categories[0] + ") ";
+    row.synonyms = firstCategoryInBraces + row.synonyms;
+};
 
 /**
  * Remove the occurences of word inside every synonym
@@ -40,7 +52,7 @@ var censorSynonyms = function (word, synonyms) {
     for (var i = 0; i < synonyms.length; i++) {
         synonyms[i] = censorString(word, synonyms[i], MIN_WORD_LENGTH_TO_CENSOR, CENSOR_SYMBOL);
     }
-}
+};
 
 /**
  * In-place O(n)
