@@ -16,8 +16,8 @@ var queries = {
      * @param res
      */
     getRandomWordsWithSynonyms: function (req, res) {
-        var wordCount = req.query.wordCount;
-        var hintCount = req.query.hintCount;
+        var wordCount = req.query.wordCount ? req.query.wordCount : 10;
+        var hintCount = req.query.hintCount ? req.query.hintCount : 3;
         var query = "SELECT * FROM synonyms WHERE length(word)<=10 ORDER BY RANDOM() LIMIT " + wordCount;
         var db = new sqlite3.Database(file);
         db.serialize(function () {
